@@ -20,6 +20,8 @@ public class User {
     private UUID Id;
     @Column(unique = true)
     private String username;
+    @Column(unique = true)
+    private String email;
     private String password;
     @Nullable
     private Timestamp lastActive;
