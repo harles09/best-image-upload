@@ -23,17 +23,17 @@ public class UserService {
         user.setLastActive(new Timestamp(System.currentTimeMillis()));
         Optional<User> existingUser = userRepository.findUserByUsername(user.getUsername());
         if(existingUser.isPresent()){
-            return new ResponseEntity<>("Sorry, Username already taken",HttpStatus.CREATED);
+            return new ResponseEntity<>("Sorry, Username already taken",HttpStatus.CONFLICT);
         }else{
             userRepository.save(user);
-            return new ResponseEntity<>("Username Created",  HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Username Created",  HttpStatus.CREATED);
         }
     }
     @TrackExecutionTime
     public ResponseEntity<?> getUserById(UUID id){
         Optional<User> existingUser = userRepository.findById(id);
         if(existingUser.isPresent()){
-            return new ResponseEntity<>(existingUser.get(),HttpStatus.CREATED);
+            return new ResponseEntity<>(existingUser.get(),HttpStatus.OK);
         }else{
             return new ResponseEntity<>("User not found",  HttpStatus.NOT_FOUND);
         }

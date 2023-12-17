@@ -3,6 +3,7 @@ package org.example.bestimageupload.Service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
+import org.example.bestimageupload.Config.TrackExecutionTime;
 import org.example.bestimageupload.Model.Image;
 import org.example.bestimageupload.Model.User;
 import org.example.bestimageupload.Repository.ImageRepository;
@@ -27,7 +28,7 @@ import java.util.UUID;
 public class ImageService {
     private ImageRepository imageRepository;
     private UserRepository userRepository;
-
+    @TrackExecutionTime
     public ResponseEntity<String> storeImage(MultipartFile file, UUID userId) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -80,6 +81,7 @@ public class ImageService {
         }
     }
     @Transactional
+    @TrackExecutionTime
     public ResponseEntity<?> getImagesByUserId(UUID userId) {
         List<Image> images = imageRepository.findByUserId(userId);
         if(images.isEmpty()){
@@ -90,6 +92,7 @@ public class ImageService {
     }
 
     @Transactional
+    @TrackExecutionTime
     public ResponseEntity<?> getImagesByImageId(UUID imageId) {
         Optional<Image> images = imageRepository.findById(imageId);
         if(images.isEmpty()){
@@ -99,6 +102,7 @@ public class ImageService {
         }
     }
     @Transactional
+    @TrackExecutionTime
     public ResponseEntity<String> deleteImage(String fileName) {
         Optional<Image> existingImage = imageRepository.findByFileName(fileName);
         if(existingImage.isPresent()) {
@@ -109,6 +113,7 @@ public class ImageService {
         }
     }
     @Transactional
+    @TrackExecutionTime
     public ResponseEntity<String> deleteImageById(UUID id){
         Optional<Image> existingImage = imageRepository.findById(id);
         if(existingImage.isPresent()) {
